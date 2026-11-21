@@ -1,0 +1,90 @@
+{
+  "generado_utc": "2026-11-21T19:15:48+00:00",
+  "fuente": {
+    "prediccion": "data/validacion/prediccion_congelada.csv",
+    "sha256": "584029a89d8a7aabbc3b14ec73ffefef05b145246fb57619e258635971f9637f"
+  },
+  "inicio": {
+    "lugar": "MUT",
+    "centro_lonlat": [
+      -70.601433,
+      -33.417741
+    ],
+    "confirmado": true
+  },
+  "metodo": "red peatonal OSM (walk), vecino más cercano + 2-opt, ruta abierta desde el MUT",
+  "red": {
+    "graphml": "cache/osm/red_walk_-33.417741_-70.601433_1100m.graphml",
+    "sha256": "cf1cbab9598c31b6e0ab76d0a59fd901bfd99add5ea7bf9ae80f2adc4d47dd9b"
+  },
+  "comunas": {
+    "Providencia": {
+      "archivo": "rejillas_mut_providencia.kml",
+      "rejillas": 20,
+      "largo_ruta_m": 2832.3,
+      "orden": [
+        "AL13SU010087",
+        "AL13SU010157",
+        "AL13SU010156",
+        "AL13SU010155",
+        "AL13SU010171",
+        "AL13SU010169",
+        "AL13SU010170",
+        "AL13SU012897",
+        "AL13SU012898",
+        "AL13SU010175",
+        "AL13SU010174",
+        "AL13SU010173",
+        "AL13SU010172",
+        "AL13SU012923",
+        "AL13SU014248",
+        "AL13SU014253",
+        "AL13SU014251",
+        "AL13SU010043",
+        "AL13SU014252",
+        "AL13SU014254"
+      ],
+      "sha256": "b6608efef2c18650ecbf39ab9ddd59e60298aaffcd354494acb502552a5d5383"
+    },
+    "Las Condes": {
+      "archivo": "rejillas_mut_las_condes.kml",
+      "rejillas": 26,
+      "largo_ruta_m": 3106.5,
+      "orden": [
+        "AL13SU014266",
+        "AL13SU014250",
+        "AL13SU014247",
+        "AL13SU014267",
+        "AL13SU014255",
+        "AL13SU014268",
+        "AL13SU014260",
+        "AL13SU014261",
+        "AL13SU014257",
+        "AL13SU014258",
+        "AL13SU014249",
+        "AL13SU014265",
+        "AL13SU016862",
+        "AL13SU016863",
+        "AL13SU016864",
+        "AL13SU016866",
+        "AL13SU016867",
+        "AL13SU016868",
+        "AL13SU016865",
+        "AL13SU016870",
+        "AL13SU016869",
+        "AL13SU016871",
+        "AL13SU016874",
+        "AL13SU016873",
+        "AL13SU016872",
+        "AL13SU016875"
+      ],
+      "sha256": "293d98e229f95b463ac65145e9c6f193d30d4864c5046596789f64845c94c072"
+    }
+  },
+  "sin_comuna_exportada": [],
+  "script": {
+    "ruta": "pipeline/06_exportar_kml.py",
+    "version": "0.1.0",
+    "sha256": "a92d7e3e76539e8b606e6655d774be6899f6e79d9795a99e66a318b36380c8f8"
+  }
+}

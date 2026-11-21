@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Rejillas zona MUT · Las Condes</name>
+    <Placemark>
+      <name>AL13SU014266</name>
+      <description>Parada 1 · El Bosque Central · rank 32 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>1</value></Data><Data name="rank"><value>32</value></Data></ExtendedData>
+      <Point><coordinates>-70.599633,-33.418723,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014250</name>
+      <description>Parada 2 · Napoleón · rank 28 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>2</value></Data><Data name="rank"><value>28</value></Data></ExtendedData>
+      <Point><coordinates>-70.598684,-33.418488,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014247</name>
+      <description>Parada 3 · Avenida Mariano Sánchez Fontecilla · rank 46 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>3</value></Data><Data name="rank"><value>46</value></Data></ExtendedData>
+      <Point><coordinates>-70.599054,-33.419842,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014267</name>
+      <description>Parada 4 · Versalles · rank 42 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>4</value></Data><Data name="rank"><value>42</value></Data></ExtendedData>
+      <Point><coordinates>-70.597614,-33.419849,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014255</name>
+      <description>Parada 5 · Versalles · rank 39 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>5</value></Data><Data name="rank"><value>39</value></Data></ExtendedData>
+      <Point><coordinates>-70.597491,-33.419839,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014268</name>
+      <description>Parada 6 · Versalles · rank 36 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>6</value></Data><Data name="rank"><value>36</value></Data></ExtendedData>
+      <Point><coordinates>-70.597557,-33.419920,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014260</name>
+      <description>Parada 7 · San Crescente · rank 17 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>7</value></Data><Data name="rank"><value>17</value></Data></ExtendedData>
+      <Point><coordinates>-70.594659,-33.419454,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014261</name>
+      <description>Parada 8 · San Crescente · rank 6 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>8</value></Data><Data name="rank"><value>6</value></Data></ExtendedData>
+      <Point><coordinates>-70.594546,-33.419400,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014257</name>
+      <description>Parada 9 · Callao · rank 40 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>9</value></Data><Data name="rank"><value>40</value></Data></ExtendedData>
+      <Point><coordinates>-70.595058,-33.418586,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014258</name>
+      <description>Parada 10 · Napoleón · rank 16 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>10</value></Data><Data name="rank"><value>16</value></Data></ExtendedData>
+      <Point><coordinates>-70.595385,-33.417707,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014249</name>
+      <description>Parada 11 · Callao · rank 24 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>11</value></Data><Data name="rank"><value>24</value></Data></ExtendedData>
+      <Point><coordinates>-70.596664,-33.418991,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014265</name>
+      <description>Parada 12 · Napoleón · rank 2 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>12</value></Data><Data name="rank"><value>2</value></Data></ExtendedData>
+      <Point><coordinates>-70.596984,-33.418077,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016862</name>
+      <description>Parada 13 · Avenida Presidente Riesco · rank 38 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>13</value></Data><Data name="rank"><value>38</value></Data></ExtendedData>
+      <Point><coordinates>-70.597397,-33.412626,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016863</name>
+      <description>Parada 14 · Avenida Presidente Riesco · rank 43 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>14</value></Data><Data name="rank"><value>43</value></Data></ExtendedData>
+      <Point><coordinates>-70.597775,-33.412529,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016864</name>
+      <description>Parada 15 · Avenida Presidente Riesco · rank 44 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>15</value></Data><Data name="rank"><value>44</value></Data></ExtendedData>
+      <Point><coordinates>-70.598376,-33.412512,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016866</name>
+      <description>Parada 16 · Avenida Presidente Riesco · rank 31 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>16</value></Data><Data name="rank"><value>31</value></Data></ExtendedData>
+      <Point><coordinates>-70.599554,-33.412269,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016867</name>
+      <description>Parada 17 · Cristal de Abelli · rank 11 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>17</value></Data><Data name="rank"><value>11</value></Data></ExtendedData>
+      <Point><coordinates>-70.599303,-33.412175,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016868</name>
+      <description>Parada 18 · Cristal de Abelli · rank 21 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>18</value></Data><Data name="rank"><value>21</value></Data></ExtendedData>
+      <Point><coordinates>-70.599366,-33.412161,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016865</name>
+      <description>Parada 19 · Avenida Presidente Riesco · rank 14 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>19</value></Data><Data name="rank"><value>14</value></Data></ExtendedData>
+      <Point><coordinates>-70.599228,-33.412256,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016870</name>
+      <description>Parada 20 · Avenida Presidente Riesco · rank 23 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>20</value></Data><Data name="rank"><value>23</value></Data></ExtendedData>
+      <Point><coordinates>-70.600596,-33.411974,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016869</name>
+      <description>Parada 21 · Avenida Presidente Riesco · rank 33 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>21</value></Data><Data name="rank"><value>33</value></Data></ExtendedData>
+      <Point><coordinates>-70.600577,-33.412059,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016871</name>
+      <description>Parada 22 · Avenida Presidente Riesco · rank 30 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>22</value></Data><Data name="rank"><value>30</value></Data></ExtendedData>
+      <Point><coordinates>-70.601556,-33.411857,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016874</name>
+      <description>Parada 23 · Luz · rank 12 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>23</value></Data><Data name="rank"><value>12</value></Data></ExtendedData>
+      <Point><coordinates>-70.602049,-33.411597,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016873</name>
+      <description>Parada 24 · Luz · rank 15 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>24</value></Data><Data name="rank"><value>15</value></Data></ExtendedData>
+      <Point><coordinates>-70.601996,-33.411610,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016872</name>
+      <description>Parada 25 · Avenida Presidente Riesco · rank 3 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>25</value></Data><Data name="rank"><value>3</value></Data></ExtendedData>
+      <Point><coordinates>-70.601949,-33.411693,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU016875</name>
+      <description>Parada 26 · Avenida Presidente Riesco · rank 1 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>26</value></Data><Data name="rank"><value>1</value></Data></ExtendedData>
+      <Point><coordinates>-70.602586,-33.411534,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Ruta a pie desde el MUT</name>
+      <Style><LineStyle><color>ff0a3dff</color><width>3</width></LineStyle></Style>
+      <LineString><tessellate>1</tessellate><coordinates>-70.601433,-33.417741,0 -70.600691,-33.417700,0 -70.600673,-33.417743,0 -70.600156,-33.417598,0 -70.600061,-33.417834,0 -70.599827,-33.418453,0 -70.599741,-33.418675,0 -70.599633,-33.418723,0 -70.599511,-33.418619,0 -70.598681,-33.418416,0 -70.598684,-33.418488,0 -70.598629,-33.418561,0 -70.598350,-33.419325,0 -70.598952,-33.419477,0 -70.598917,-33.419651,0 -70.599105,-33.419867,0 -70.599054,-33.419842,0 -70.598917,-33.419651,0 -70.597884,-33.419374,0 -70.597757,-33.419341,0 -70.597347,-33.419773,0 -70.597375,-33.419800,0 -70.597614,-33.419849,0 -70.597491,-33.419839,0 -70.597557,-33.419920,0 -70.597347,-33.419773,0 -70.596911,-33.419737,0 -70.596645,-33.419071,0 -70.596525,-33.419044,0 -70.595047,-33.418650,0 -70.594906,-33.418611,0 -70.594397,-33.419333,0 -70.594659,-33.419454,0 -70.594546,-33.419400,0 -70.594906,-33.418611,0 -70.595047,-33.418650,0 -70.595058,-33.418586,0 -70.595097,-33.418506,0 -70.595166,-33.418303,0 -70.595377,-33.417768,0 -70.595385,-33.417707,0 -70.595166,-33.418303,0 -70.595335,-33.418571,0 -70.596569,-33.418897,0 -70.596697,-33.418929,0 -70.596664,-33.418991,0 -70.596971,-33.418157,0 -70.597022,-33.418011,0 -70.596984,-33.418077,0 -70.597345,-33.417103,0 -70.597414,-33.417125,0 -70.597495,-33.416857,0 -70.597411,-33.416840,0 -70.597666,-33.416007,0 -70.597798,-33.415552,0 -70.597949,-33.415061,0 -70.597973,-33.414952,0 -70.597970,-33.414783,0 -70.597945,-33.414496,0 -70.597825,-33.414474,0 -70.597786,-33.414269,0 -70.597637,-33.413447,0 -70.597574,-33.413165,0 -70.597453,-33.412666,0 -70.597397,-33.412626,0 -70.597613,-33.412663,0 -70.597712,-33.412649,0 -70.597701,-33.412521,0 -70.597775,-33.412529,0 -70.597712,-33.412649,0 -70.598564,-33.412519,0 -70.598546,-33.412455,0 -70.598376,-33.412512,0 -70.598564,-33.412519,0 -70.599688,-33.412272,0 -70.599554,-33.412269,0 -70.599654,-33.412124,0 -70.599361,-33.412189,0 -70.599303,-33.412175,0 -70.599366,-33.412161,0 -70.599382,-33.412268,0 -70.599228,-33.412256,0 -70.599361,-33.412189,0 -70.599654,-33.412124,0 -70.600567,-33.411923,0 -70.600595,-33.412021,0 -70.600596,-33.411974,0 -70.600577,-33.412059,0 -70.600567,-33.411923,0 -70.600615,-33.411912,0 -70.601501,-33.411718,0 -70.601539,-33.411824,0 -70.601556,-33.411857,0 -70.601501,-33.411718,0 -70.602056,-33.411595,0 -70.602049,-33.411597,0 -70.601996,-33.411610,0 -70.602098,-33.411706,0 -70.601949,-33.411693,0 -70.602056,-33.411595,0 -70.602611,-33.411473,0 -70.602586,-33.411534,0</coordinates></LineString>
+    </Placemark>
+  </Document>
+</kml>

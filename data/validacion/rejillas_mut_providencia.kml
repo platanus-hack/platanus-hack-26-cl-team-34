@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Rejillas zona MUT · Providencia</name>
+    <Placemark>
+      <name>AL13SU010087</name>
+      <description>Parada 1 · Avenida Nueva Providencia · rank 4 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>1</value></Data><Data name="rank"><value>4</value></Data></ExtendedData>
+      <Point><coordinates>-70.604457,-33.417855,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010157</name>
+      <description>Parada 2 · Avenida Holanda · rank 8 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>2</value></Data><Data name="rank"><value>8</value></Data></ExtendedData>
+      <Point><coordinates>-70.605062,-33.417712,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010156</name>
+      <description>Parada 3 · Avenida Nueva Providencia · rank 10 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>3</value></Data><Data name="rank"><value>10</value></Data></ExtendedData>
+      <Point><coordinates>-70.605076,-33.417872,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010155</name>
+      <description>Parada 4 · Avenida Holanda · rank 5 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>4</value></Data><Data name="rank"><value>5</value></Data></ExtendedData>
+      <Point><coordinates>-70.604984,-33.417958,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010171</name>
+      <description>Parada 5 · Avenida Los Leones · rank 29 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>5</value></Data><Data name="rank"><value>29</value></Data></ExtendedData>
+      <Point><coordinates>-70.605285,-33.421545,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010169</name>
+      <description>Parada 6 · Avenida Los Leones · rank 41 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>6</value></Data><Data name="rank"><value>41</value></Data></ExtendedData>
+      <Point><coordinates>-70.604579,-33.423232,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010170</name>
+      <description>Parada 7 · Avenida Los Leones · rank 27 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>7</value></Data><Data name="rank"><value>27</value></Data></ExtendedData>
+      <Point><coordinates>-70.604660,-33.423068,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU012897</name>
+      <description>Parada 8 · Lota · rank 7 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>8</value></Data><Data name="rank"><value>7</value></Data></ExtendedData>
+      <Point><coordinates>-70.602838,-33.422772,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU012898</name>
+      <description>Parada 9 · San Pío X · rank 25 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>9</value></Data><Data name="rank"><value>25</value></Data></ExtendedData>
+      <Point><coordinates>-70.603608,-33.421014,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010175</name>
+      <description>Parada 10 · Avenida Holanda · rank 37 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>10</value></Data><Data name="rank"><value>37</value></Data></ExtendedData>
+      <Point><coordinates>-70.604260,-33.419501,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010174</name>
+      <description>Parada 11 · Avenida Providencia · rank 18 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>11</value></Data><Data name="rank"><value>18</value></Data></ExtendedData>
+      <Point><coordinates>-70.604548,-33.419390,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010173</name>
+      <description>Parada 12 · Avenida Providencia · rank 26 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>12</value></Data><Data name="rank"><value>26</value></Data></ExtendedData>
+      <Point><coordinates>-70.604427,-33.419336,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010172</name>
+      <description>Parada 13 · Avenida Holanda · rank 19 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>13</value></Data><Data name="rank"><value>19</value></Data></ExtendedData>
+      <Point><coordinates>-70.604355,-33.419243,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU012923</name>
+      <description>Parada 14 · Luis Thayer Ojeda · rank 35 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>14</value></Data><Data name="rank"><value>35</value></Data></ExtendedData>
+      <Point><coordinates>-70.602832,-33.418643,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014248</name>
+      <description>Parada 15 · El Bosque Central · rank 45 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>15</value></Data><Data name="rank"><value>45</value></Data></ExtendedData>
+      <Point><coordinates>-70.599307,-33.419711,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014253</name>
+      <description>Parada 16 · Avenida El Bosque · rank 20 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>16</value></Data><Data name="rank"><value>20</value></Data></ExtendedData>
+      <Point><coordinates>-70.598459,-33.421884,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014251</name>
+      <description>Parada 17 · Avenida El Bosque · rank 22 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>17</value></Data><Data name="rank"><value>22</value></Data></ExtendedData>
+      <Point><coordinates>-70.598551,-33.421809,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU010043</name>
+      <description>Parada 18 · Avenida El Bosque · rank 9 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>18</value></Data><Data name="rank"><value>9</value></Data></ExtendedData>
+      <Point><coordinates>-70.598376,-33.422320,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014252</name>
+      <description>Parada 19 · Avenida El Bosque · rank 13 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>19</value></Data><Data name="rank"><value>13</value></Data></ExtendedData>
+      <Point><coordinates>-70.598422,-33.422059,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>AL13SU014254</name>
+      <description>Parada 20 · Avenida El Bosque · rank 34 de la predicción congelada</description>
+      <ExtendedData><Data name="orden"><value>20</value></Data><Data name="rank"><value>34</value></Data></ExtendedData>
+      <Point><coordinates>-70.598521,-33.422429,0</coordinates></Point>
+    </Placemark>
+    <Placemark>
+      <name>Ruta a pie desde el MUT</name>
+      <Style><LineStyle><color>ff0a3dff</color><width>3</width></LineStyle></Style>
+      <LineString><tessellate>1</tessellate><coordinates>-70.601433,-33.417741,0 -70.601822,-33.418124,0 -70.601896,-33.418045,0 -70.602176,-33.417936,0 -70.602731,-33.417759,0 -70.604141,-33.417618,0 -70.604264,-33.417666,0 -70.604486,-33.417800,0 -70.604503,-33.417840,0 -70.604457,-33.417855,0 -70.604704,-33.417802,0 -70.604749,-33.417700,0 -70.605038,-33.417344,0 -70.604972,-33.417784,0 -70.605062,-33.417712,0 -70.605038,-33.417344,0 -70.604749,-33.417700,0 -70.604704,-33.417802,0 -70.604842,-33.417843,0 -70.604989,-33.417890,0 -70.605076,-33.417872,0 -70.604984,-33.417958,0 -70.605496,-33.418646,0 -70.605545,-33.418774,0 -70.605579,-33.418858,0 -70.605895,-33.419684,0 -70.605893,-33.419825,0 -70.606028,-33.419906,0 -70.605990,-33.419965,0 -70.605483,-33.421101,0 -70.605329,-33.421500,0 -70.605285,-33.421545,0 -70.605047,-33.422195,0 -70.604937,-33.422205,0 -70.604855,-33.422183,0 -70.604514,-33.423059,0 -70.604769,-33.423141,0 -70.604742,-33.423226,0 -70.604545,-33.423182,0 -70.604579,-33.423232,0 -70.604742,-33.423226,0 -70.604769,-33.423141,0 -70.604660,-33.423068,0 -70.604514,-33.423059,0 -70.604466,-33.423083,0 -70.602874,-33.422741,0 -70.602838,-33.422772,0 -70.603573,-33.421104,0 -70.603631,-33.420968,0 -70.603608,-33.421014,0 -70.603903,-33.420282,0 -70.604289,-33.419436,0 -70.604260,-33.419501,0 -70.604333,-33.419339,0 -70.604548,-33.419390,0 -70.604357,-33.419286,0 -70.604427,-33.419336,0 -70.604335,-33.419235,0 -70.604355,-33.419243,0 -70.604202,-33.419189,0 -70.602878,-33.418653,0 -70.602832,-33.418643,0 -70.602864,-33.418611,0 -70.602772,-33.418567,0 -70.601815,-33.418220,0 -70.601686,-33.418409,0 -70.601566,-33.418355,0 -70.601518,-33.418343,0 -70.601341,-33.418255,0 -70.600892,-33.418645,0 -70.599475,-33.419692,0 -70.599365,-33.419771,0 -70.599307,-33.419711,0 -70.599105,-33.419867,0 -70.598991,-33.420082,0 -70.598930,-33.420393,0 -70.598753,-33.420856,0 -70.598432,-33.421763,0 -70.598368,-33.421800,0 -70.598459,-33.421884,0 -70.598432,-33.421763,0 -70.598655,-33.421799,0 -70.598641,-33.421841,0 -70.598551,-33.421809,0 -70.598582,-33.421983,0 -70.598544,-33.422011,0 -70.598376,-33.422320,0 -70.598422,-33.422059,0 -70.598521,-33.422429,0</coordinates></LineString>
+    </Placemark>
+  </Document>
+</kml>
