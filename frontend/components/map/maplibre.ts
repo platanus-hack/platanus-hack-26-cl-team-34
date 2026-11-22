@@ -34,26 +34,40 @@ export function loadMapLibre(): Promise<MapLibre> {
   return promise;
 }
 
-// Mapa base: Esri World Light Gray (Esri, HERE, Garmin, © OpenStreetMap)
+// Mapa base: Esri Canvas, World Light Gray y World Dark Gray (Esri, HERE, Garmin, © OpenStreetMap).
+// Las dos variantes están en el estilo y `pintarMapa` (DrenaMap) deja visible la que calza con el
+// fondo de la paleta: con fondo oscuro, la gris oscura. MapLibre solo pide teselas de capas visibles.
+const esri = (servicio: string) => ({
+  type: "raster",
+  tiles: [`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${servicio}/MapServer/tile/{z}/{y}/{x}`],
+  tileSize: 256,
+  maxzoom: 16,
+});
+
+/** Capas raster de cada variante del mapa base. */
+export const CAPAS_BASE = { claro: ["base", "ref"], oscuro: ["base-osc", "ref-osc"] } as const;
+
+const oculta = { visibility: "none" };
+
+/** Opacidad normal de los nombres del mapa base (DrenaMap la baja cuando muestra los nombres de comuna). */
+export const OPACIDAD_NOMBRES = { ref: 0.75, "ref-osc": 0.7 } as const;
+
 export const BASE_STYLE = {
   version: 8,
   sources: {
-    base: {
-      type: "raster",
-      tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"],
-      tileSize: 256,
-      maxzoom: 16,
-    },
-    ref: {
-      type: "raster",
-      tiles: ["https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}"],
-      tileSize: 256,
-      maxzoom: 16,
-    },
+    base: esri("World_Light_Gray_Base"),
+    ref: esri("World_Light_Gray_Reference"),
+    "base-osc": esri("World_Dark_Gray_Base"),
+    "ref-osc": esri("World_Dark_Gray_Reference"),
   },
   layers: [
-    { id: "bg", type: "background", paint: { "background-color": "#e8e8e6" } }, // paleta-ok: valor inicial; pintarMapa lo repinta con --map-bg
-    { id: "base", type: "raster", source: "base", paint: { "raster-saturation": -1, "raster-opacity": 0.95 } },
-    { id: "ref", type: "raster", source: "ref", paint: { "raster-opacity": 0.75 } },
+    { id: "bg", type: "background", paint: { "background-color": "#2d2c33" } }, // paleta-ok: valor inicial; pintarMapa lo repinta con --map-bg
+    // Primero los dos fondos y después las dos capas de nombres: el relieve se inserta antes de "ref"
+    // y así queda sobre el fondo de cualquiera de las dos variantes y bajo sus nombres.
+    { id: "base", type: "raster", source: "base", layout: oculta, paint: { "raster-saturation": -1, "raster-opacity": 0.95 } },
+    // Sin color propio y algo transparente: el fondo de la paleta (--map-bg) tiñe las calles y manzanas
+    { id: "base-osc", type: "raster", source: "base-osc", paint: { "raster-saturation": -1, "raster-opacity": 0.8, "raster-contrast": 0.15 } },
+    { id: "ref", type: "raster", source: "ref", layout: oculta, paint: { "raster-opacity": OPACIDAD_NOMBRES.ref } },
+    { id: "ref-osc", type: "raster", source: "ref-osc", paint: { "raster-saturation": -1, "raster-opacity": OPACIDAD_NOMBRES["ref-osc"] } },
   ],
 };

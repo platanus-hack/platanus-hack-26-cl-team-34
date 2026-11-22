@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type { LngLat, Prioridad } from "@/lib/data";
 import { FLUJO_CONFIG } from "@/lib/flujo/config";
-import { BASE_STYLE, loadMapLibre, type MapLibre } from "./maplibre";
+import { BASE_STYLE, CAPAS_BASE, loadMapLibre, OPACIDAD_NOMBRES, type MapLibre } from "./maplibre";
 import { colorDe, EVENTO_PALETA } from "@/lib/paleta";
 import { ordenPins } from "@/lib/decision";
 
@@ -158,8 +158,22 @@ const COLORES_CAPAS: [capa: string, propiedad: string, color: string][] = [
   ["chain-line", "line-color", "principal"],
 ];
 
+/** Luminancia relativa (WCAG) de un #rrggbb. */
+function luminancia(hex: string) {
+  const [r, g, b] = [1, 3, 5].map((i) => {
+    const v = parseInt(hex.slice(i, i + 2), 16) / 255;
+    return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
 function pintarMapa(map: MapLibre) {
   for (const [capa, prop, color] of COLORES_CAPAS) if (map.getLayer(capa)) map.setPaintProperty(capa, prop, colorDe(color));
+  // Mapa base claro u oscuro según el fondo de la paleta (oscuro por defecto)
+  const oscuro = luminancia(colorDe("fondo")) < 0.18;
+  const ver = (ids: readonly string[], si: boolean) => ids.forEach((id) => map.getLayer(id) && map.setLayoutProperty(id, "visibility", si ? "visible" : "none"));
+  ver(CAPAS_BASE.oscuro, oscuro);
+  ver(CAPAS_BASE.claro, !oscuro);
 }
 
 interface ComunaRm {
@@ -397,7 +411,7 @@ export default function DrenaMap(props: DrenaMapProps) {
       const on = (props.comunas ?? true) && z >= ZOOM_ETIQUETAS_COMUNA;
       comunaMarkers.current.forEach(({ el }) => el.classList.toggle("is-on", on));
       // Con los nombres de comuna a la vista, los del mapa base se atenúan para no pisarse
-      map.setPaintProperty("ref", "raster-opacity", on ? (z >= 15 ? 0.75 : 0.08) : 0.75);
+      for (const [id, normal] of Object.entries(OPACIDAD_NOMBRES)) map.setPaintProperty(id, "raster-opacity", on && z < 15 ? 0.08 : normal);
     };
     cargarComunasRm().then((lista) => {
       if (!vivo) return;
