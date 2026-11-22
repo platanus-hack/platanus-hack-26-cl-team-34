@@ -67,6 +67,25 @@ def test_ficha_protege_datos_de_observaciones_vecinales():
         assert por_tipo["foto_rejilla"]["tiene_texto"] is False
         assert por_tipo["foto_rejilla"]["tiene_foto"] is True
         assert por_tipo["foto_rejilla"]["clasificacion"] == clasificacion_foto_publica
+
+        # La señal de equipo debe sobrevivir al límite de 20 observaciones de la ficha.
+        with get_conn() as conn:
+            conn.execute(
+                "insert into classifications (observation_id, resultado, modelo, prompt_version) "
+                "values (%s, %s, 'test', 'v1')",
+                (foto_id, Jsonb({"evaluable": True, "rejilla": "tapada", "material": ["sedimento"]})),
+            )
+            conn.execute(
+                "insert into observations (sumidero_id, fuente, tipo, texto) "
+                "select %s, 'vecino', 'texto', 'Reporte posterior' from generate_series(1, 20)",
+                (sumidero_id,),
+            )
+        ficha = TestClient(app).get(f"/sumideros/{sumidero_id}").json()
+        assert len(ficha["observaciones"]) == 20
+        assert all(o["tipo"] == "texto" for o in ficha["observaciones"])
+        foto_usada, = [s for s in ficha["senales"] if s["senal"] == "rejilla" and s["usada"]]
+        assert foto_usada["observation_id"] == str(foto_id)
+        assert foto_usada["material"] == ["sedimento"]
     finally:
         with get_conn() as conn:
             conn.execute("delete from observations where sumidero_id = %s", (sumidero_id,))

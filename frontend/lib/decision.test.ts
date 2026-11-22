@@ -4,6 +4,7 @@ import { test } from "node:test";
 
 import {
   equipoSugerido,
+  fotoParaEquipo,
   evidenciaVigente,
   motivosCalculados,
   ordenPins,
@@ -23,6 +24,27 @@ const obs = (h: number, clasificacion: unknown, extra: Record<string, unknown> =
   ts: hace(h),
   clasificacion,
   ...extra,
+});
+
+test("la señal vigente conserva el hidrojet aunque 20 textos desplacen la foto de la ficha", () => {
+  const observaciones = Array.from({ length: 20 }, () => obs(1, { tipo: "basura" }, { tipo: "texto" }));
+  const foto = fotoParaEquipo({ observaciones, senales: [{
+    observation_id: "foto", senal: "rejilla", tipo_observacion: "foto_rejilla", ts: hace(24),
+    fuente: "vecino", valor: "tapada", material: ["sedimento"], confianza: "alta",
+    factor_confianza: 1, aplica_en: ["durante"], usada: true, is_simulated: false,
+  }] }, AHORA);
+  assert.equal(equipoSugerido(foto), "hidrojet");
+});
+
+test("el texto conserva incidente, gravedad y riesgo, y solo marca niveles de agua observados", () => {
+  const clasificacion = { tipo: "arbol_caido", gravedad: "alta", personas_en_riesgo: true };
+  for (const nivel of ["sin_agua", "no_evaluable", "hasta_vereda"]) {
+    const e = evidenciaVigente([obs(1, { ...clasificacion, nivel_agua: nivel }, { tipo: "texto" })], AHORA);
+    assert.ok(e);
+    assert.equal(e.nivelAgua, nivel === "hasta_vereda" ? nivel : null);
+    const agua = nivel === "hasta_vereda" ? " · agua hasta la vereda" : "";
+    assert.equal(textoEvidencia(e), "Reporte de texto: árbol caído · gravedad alta · personas en riesgo" + agua);
+  }
 });
 
 test("los pines de mayor prioridad se dibujan al final, encima de los demás", () => {

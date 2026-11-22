@@ -58,7 +58,7 @@ _FILTRO_COMUN = """o.sumidero_id is not null
 _SQL_LECTURAS = {
     # Foto de rejilla evaluable: P (lo confirmado manda)
     "rejilla": f"""
-        select {_COLUMNAS}, c.resultado->>'rejilla' as valor
+        select {_COLUMNAS}, c.resultado->>'rejilla' as valor, c.resultado->'material' as material
           from observations o {_ULTIMA_CLASIFICACION}
          where o.tipo = 'foto_rejilla' and {_FILTRO_COMUN}
            and (c.resultado->>'evaluable')::boolean
@@ -142,6 +142,8 @@ def senales_sumidero(
                 "tipo_observacion": r["tipo"],
                 "ts": r["ts"],
                 "valor": r["valor"],
+                **({"material": [m for m in r["material"] or [] if m in ("hojas", "basura", "sedimento")]}
+                   if clase == "rejilla" else {}),
                 "confianza": r["confianza"],
                 "factor_confianza": factor_confianza(r["confianza"], cfg),
                 "aplica_en": ["durante"] if clase == "agua" else ["antes", "durante"],

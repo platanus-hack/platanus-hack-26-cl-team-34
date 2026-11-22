@@ -86,6 +86,8 @@ export interface ApiSenal {
   ts: string;
   /** Lo que leyó Claude: estado de la rejilla, tipo de texto o nivel de agua. */
   valor: string;
+  /** Material visible en una señal de rejilla. Opcional en versiones anteriores de la API. */
+  material?: string[];
   /** null: la clasificación no trae confianza (textos, clasificaciones antiguas). */
   confianza: ApiConfianza | null;
   factor_confianza: number;
