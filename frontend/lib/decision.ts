@@ -50,6 +50,9 @@ export interface Evidencia {
   material: string[];
   nivelAgua: string | null;
   simulada: boolean;
+  incidente?: string;
+  gravedad?: string;
+  personasEnRiesgo?: boolean;
 }
 
 type ObsFicha = ApiFicha["observaciones"][number];
@@ -64,8 +67,10 @@ export function evidenciaVigente(obs: readonly ObsFicha[], ahora = Date.now(), t
     const t = Date.parse(o.ts);
     const c = (o.clasificacion ?? null) as Record<string, unknown> | null;
     if (!Number.isFinite(t) || !c || c.evaluable === false) continue;
-    const nivelAgua = typeof c.nivel_agua === "string" ? c.nivel_agua : null;
-    const vigenciaH = nivelAgua && typeof c.rejilla !== "string" ? VIGENCIA_AGUA_H : VIGENCIA_OBSERVACION_H;
+    const edadH = (ahora - t) / 3_600_000;
+    const nivelAgua = edadH < VIGENCIA_AGUA_H && typeof c.nivel_agua === "string" && Object.hasOwn(AGUA, c.nivel_agua)
+      ? c.nivel_agua : null;
+    const vigenciaH = o.tipo === "texto" || typeof c.rejilla === "string" ? VIGENCIA_OBSERVACION_H : VIGENCIA_AGUA_H;
     if (ahora - t >= vigenciaH * 3_600_000) continue;
     return {
       tipo: o.tipo,
@@ -75,6 +80,9 @@ export function evidenciaVigente(obs: readonly ObsFicha[], ahora = Date.now(), t
       material: Array.isArray(c.material) ? c.material.map(String) : [],
       nivelAgua,
       simulada: !!o.is_simulated,
+      incidente: typeof c.tipo === "string" ? c.tipo : undefined,
+      gravedad: typeof c.gravedad === "string" ? c.gravedad : undefined,
+      personasEnRiesgo: typeof c.personas_en_riesgo === "boolean" ? c.personas_en_riesgo : undefined,
     };
   }
   return null;
@@ -83,12 +91,33 @@ export function evidenciaVigente(obs: readonly ObsFicha[], ahora = Date.now(), t
 const FUENTE: Record<string, string> = { vecino: "Foto de vecino", cuadrilla: "Foto de cuadrilla", camara: "Cámara", sensor: "Sensor" };
 const REJILLA: Record<string, string> = { tapada: "rejilla tapada", parcial: "rejilla parcialmente tapada", limpia: "rejilla limpia" };
 const AGUA: Record<string, string> = { cuneta: "agua en la cuneta", hasta_vereda: "agua hasta la vereda", sobre_vereda: "agua sobre la vereda" };
+const INCIDENTE: Record<string, string> = { anegamiento: "anegamiento", rejilla_tapada: "rejilla tapada", basura: "basura", arbol_caido: "árbol caído", otro: "otro incidente" };
 
 /** "Foto de vecino: rejilla tapada (hojas, sedimento)". La hora va aparte, en hora de Santiago. */
 export function textoEvidencia(e: Evidencia): string {
-  const origen = e.tipo === "texto" ? "Reporte de texto" : (FUENTE[e.fuente] ?? "Reporte");
+  if (e.tipo === "texto") {
+    const detalles = [
+      (e.incidente && INCIDENTE[e.incidente]) || "incidente sin especificar",
+      e.gravedad && `gravedad ${e.gravedad}`,
+      e.personasEnRiesgo === true ? "personas en riesgo" : e.personasEnRiesgo === false ? "sin personas en riesgo reportadas" : null,
+      e.nivelAgua && AGUA[e.nivelAgua],
+    ];
+    return `Reporte de texto: ${detalles.filter(Boolean).join(" · ")}`;
+  }
+  const origen = FUENTE[e.fuente] ?? "Reporte";
   const que = (e.rejilla && REJILLA[e.rejilla]) || (e.nivelAgua && AGUA[e.nivelAgua]) || "clasificación registrada";
   return `${origen}: ${que}${e.material.length ? ` (${e.material.join(", ")})` : ""}`;
+}
+
+/** La señal elegida por la fórmula incluye fotos vigentes fuera de las 20 observaciones recientes. */
+export function fotoParaEquipo(ficha: Pick<ApiFicha, "senales" | "observaciones">, ahora = Date.now()): Evidencia | null {
+  const foto = ficha.senales?.find((s) => s.senal === "rejilla" && s.usada);
+  if (!foto?.material) return evidenciaVigente(ficha.observaciones, ahora, "foto_rejilla");
+  if (ahora - Date.parse(foto.ts) >= VIGENCIA_OBSERVACION_H * 3_600_000) return null;
+  return {
+    tipo: "foto_rejilla", fuente: foto.fuente, ts: foto.ts, rejilla: foto.valor,
+    material: foto.material, nivelAgua: null, simulada: foto.is_simulated,
+  };
 }
 
 /**

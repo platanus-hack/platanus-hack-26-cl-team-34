@@ -6,7 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Kicker, Logo } from "@/components/ui";
 import { ApiError, getFicha, type ApiFicha } from "@/lib/api";
 import { ESCENARIO_CENTRAL } from "@/lib/central";
-import { equipoSugerido, evidenciaVigente, motivosCalculados, textoEvidencia } from "@/lib/decision";
+import { equipoSugerido, evidenciaVigente, fotoParaEquipo, motivosCalculados, textoEvidencia } from "@/lib/decision";
 import {
   cambiarEstado,
   cerrarMision,
@@ -139,9 +139,9 @@ function fechaCorta(fecha: string) {
 function PorQue({ ficha }: { ficha: ApiFicha | "error" | undefined }) {
   if (!ficha) return <p className="rp-small" role="status">Cargando el detalle de la rejilla…</p>;
   if (ficha === "error") return <p className="rp-small" role="status">Sin detalle de la rejilla por ahora. La parada sigue vigente.</p>;
-  const ev = evidenciaVigente(ficha.observaciones);
   // El equipo sale de la última foto de rejilla, aunque después haya llegado una de agua
-  const rejilla = evidenciaVigente(ficha.observaciones, Date.now(), "foto_rejilla");
+  const rejilla = fotoParaEquipo(ficha);
+  const ev = evidenciaVigente(ficha.observaciones) ?? rejilla;
   const equipo = equipoSugerido(rejilla);
   const score = ficha.scores.durante ?? ficha.scores.antes;
   const motivos = motivosCalculados(score?.detalle?.aportes);

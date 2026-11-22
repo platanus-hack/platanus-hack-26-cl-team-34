@@ -149,7 +149,7 @@ class _ConnFalsa:
 def _fila(obs, valor, confianza, tipo="foto_rejilla", fuente="vecino", hora=12, simulada=False):
     return {"observation_id": obs, "sumidero_id": "s1", "fuente": fuente, "tipo": tipo,
             "ts": datetime(2026, 11, 21, hora, tzinfo=UTC), "is_simulated": simulada,
-            "confianza": confianza, "valor": valor}
+            "confianza": confianza, "valor": valor, "material": []}
 
 
 def test_senales_de_la_ficha_con_fuente_hora_y_confianza():
@@ -193,10 +193,12 @@ def test_senales_sin_foto_los_textos_cuentan():
 
 def test_senales_no_exponen_texto_ni_foto():
     """La ficha es de lectura pública: solo valores cerrados, sin texto libre ni rutas de fotos."""
-    conn = _ConnFalsa({"rejilla": [_fila("f1", "tapada", "alta")]})
+    fila = {**_fila("f1", "tapada", "alta"), "material": ["sedimento", "nota privada"]}
+    conn = _ConnFalsa({"rejilla": [fila]})
     (s,) = scoring.senales_sumidero(conn, "s1", CFG)
     assert set(s) == {"observation_id", "senal", "fuente", "tipo_observacion", "ts", "valor", "confianza",
-                      "factor_confianza", "aplica_en", "usada", "is_simulated"}
+                      "factor_confianza", "aplica_en", "usada", "is_simulated", "material"}
+    assert s["material"] == ["sedimento"]
 
 
 # --- Texto de punta a punta: clasificador → classifications → scores.detalle (revisión de #135) ---
