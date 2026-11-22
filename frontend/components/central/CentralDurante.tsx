@@ -13,11 +13,12 @@ import {
 } from "@/lib/central";
 import { getCuadrillas, getRuta, type Cuadrilla, type RutaCuadrilla } from "@/lib/cuadrilla";
 import type { LngLat, Prioridad } from "@/lib/data";
+import { paradasPorSumidero } from "@/lib/decision";
 import { boundsDe, prioDe } from "@/lib/real";
 import { horaSantiago, NIVEL_AGUA, useExpuestos, type EstadoConsulta, type EvidenciaAgua } from "@/lib/transporte";
 import Transporte from "../desktop/Transporte";
 import DrenaMap, { type MapLabel, type MapPin } from "../map/DrenaMap";
-import { Logo } from "../ui";
+import { EstadoChip, Logo, PrioChip } from "../ui";
 import { useCapaCadenas } from "./capaCadenas";
 import styles from "./central.module.css";
 
@@ -110,12 +111,15 @@ function QueCambio({ observacion, ranking, estado }: {
   );
 }
 
-function Misiones({ cuadrilla, ruta, estado }: {
+function Misiones({ cuadrilla, ruta, estado, ranking }: {
   cuadrilla: Cuadrilla;
   ruta: RutaCuadrilla | null;
   estado: EstadoConsulta;
+  ranking: ApiRankingItem[];
 }) {
   const cierre = ruta?.ultimo_cierre;
+  // La misión trae solo la calle; el ranking identifica la esquina, el puesto y el puntaje
+  const puesto = new Map(ranking.map((p, i) => [p.sumidero_id, { ...p, puesto: i + 1 }]));
   return (
     <section className={styles.card} aria-label="Misiones">
       <h2>Misiones · {cuadrilla.nombre}</h2>
@@ -123,12 +127,19 @@ function Misiones({ cuadrilla, ruta, estado }: {
       <EstadoFuente nombre="ruta" estado={estado} />
       {ruta?.misiones.length ? (
         <ol className={styles.stops} aria-label="Paradas propuestas">
-          {ruta.misiones.map((mision) => (
-            <li key={mision.mission_id}>
-              <strong>{mision.nombre}</strong>
-              <small>{ESTADO_MISION[mision.estado]}{mision.sumidero_id ? ` · Rejilla ${mision.sumidero_id}` : ""}</small>
-            </li>
-          ))}
+          {ruta.misiones.map((mision) => {
+            const p = mision.sumidero_id ? puesto.get(mision.sumidero_id) : undefined;
+            return (
+              <li key={mision.mission_id}>
+                <strong>{p?.intersection_nombre ?? mision.nombre}</strong>
+                <small>
+                  {ESTADO_MISION[mision.estado]}
+                  {p ? ` · puesto ${p.puesto} · puntaje ${puntaje(p.prioridad)}` : ""}
+                  {mision.sumidero_id ? ` · Rejilla ${mision.sumidero_id}` : ""}
+                </small>
+              </li>
+            );
+          })}
         </ol>
       ) : estado === "ok" && <p className={styles.hint}>Sin paradas propuestas.</p>}
       {cierre && (
@@ -237,8 +248,17 @@ export default function CentralDurante() {
   const consultaRuta = useConsultaPeriodica(cuadrilla ? consultarRuta : null);
   const ruta = consultaRuta.datos?.crew_id === idCuadrilla ? consultaRuta.datos : null;
   const estadoRuta = consultaRuta.datos && !ruta && consultaRuta.estado !== "error" ? "cargando" : consultaRuta.estado;
-  const filas = (esperaRankingDurante ? rankingInicial.datos : ranking.datos)?.items ?? [];
+  const datosRanking = esperaRankingDurante ? rankingInicial.datos : ranking.datos;
+  const filas = useMemo(() => datosRanking?.items ?? [], [datosRanking]);
   const obs = reportes.datos ?? [];
+  // Misma clasificación que los pines del mapa (MapaCentral)
+  const prioFila = useMemo(() => {
+    const distintos = new Set(filas.flatMap((p) => p.prioridad == null ? [] : [p.prioridad])).size > 1;
+    return filas.map((_, i) => prioDe(i + 1, filas.length, distintos));
+  }, [filas]);
+  const enRuta = useMemo(() => paradasPorSumidero(ruta?.misiones ?? []), [ruta]);
+  const altas = prioFila.filter((p, i) => p === "alta" && filas[i].prioridad != null).length;
+  const altasSinRuta = filas.filter((p, i) => prioFila[i] === "alta" && p.prioridad != null && !enRuta.has(p.sumidero_id)).length;
   const marcas = useMemo((): MapLabel[] => {
     const expuestos = tp.datos?.expuestos ?? [];
     const expuestoElegido = expuestos.find((p) => p.id === paradero);
@@ -281,27 +301,42 @@ export default function CentralDurante() {
             evidenciaAgua={tp.datos?.evidencia_agua ?? SIN_EVIDENCIA_AGUA}
             vigenciaAguaH={tp.datos?.parametros.vigencia_agua_horas ?? 6}
             alcanceAguaM={tp.datos?.parametros.aguas_abajo_m ?? 150} />
-          <section aria-label="Ranking de prioridad" className={styles.card}>
-            <h2>Prioridad de limpieza</h2>
-            <p className={styles.hint}>Orden y puntaje de prioridad en la zona</p>
+          <section aria-labelledby="titulo-ranking" className={styles.card}>
+            <h2 id="titulo-ranking">Prioridad de limpieza</h2>
+            <p className={styles.hint}>Puntaje de prioridad calculado en la zona. Alta, media y baja son el 10 %, el 20 % y el resto del ranking.</p>
+            {filas.length > 0 && (
+              <p className={styles.resumen}>
+                <b>{filas.length}</b> rejillas · <b>{altas}</b> con prioridad alta
+                {cuadrilla && ruta && <> · <b>{enRuta.size}</b> en la ruta de {cuadrilla.nombre}{altasSinRuta > 0 && <> · <b>{altasSinRuta}</b> altas fuera de esta ruta</>}</>}
+              </p>
+            )}
             {filas.length ? (
-              <ol className={styles.ranking}>
-                {filas.map((p, i) => (
-                  <li key={p.sumidero_id}>
-                    <span>{i + 1}</span>
-                    <span>{p.intersection_nombre ?? `Sumidero ${p.sumidero_id}`}{p.intersection_nombre && <small>{p.sumidero_id}</small>}
-                      {p.is_simulated && <small>Simulado</small>}
-                    </span>
-                    <span>{puntaje(p.prioridad)}{p.detalle?.urgente && <small className={styles.urgent}>Urgente</small>}</span>
-                  </li>
-                ))}
+              // Lista con desplazamiento propio: enfocable para recorrerla con el teclado
+              <ol className={styles.ranking} tabIndex={0} aria-labelledby="titulo-ranking">
+                {filas.map((p, i) => {
+                  const parada = enRuta.get(p.sumidero_id);
+                  return (
+                    <li key={p.sumidero_id} className={parada ? styles.enRuta : undefined}>
+                      <span>{i + 1}</span>
+                      <span>{p.intersection_nombre ?? `Sumidero ${p.sumidero_id}`}
+                        <small>{p.intersection_nombre ? p.sumidero_id : ""}{p.is_simulated ? `${p.intersection_nombre ? " · " : ""}Simulado` : ""}</small>
+                        {parada && <span className={styles.tags}><EstadoChip estado="enruta" /><small>Parada {parada.orden} · {ESTADO_MISION[parada.estado as keyof typeof ESTADO_MISION] ?? parada.estado}</small></span>}
+                      </span>
+                      <span className={styles.prio}>
+                        {p.prioridad != null && <PrioChip prio={prioFila[i]} />}
+                        <span>{puntaje(p.prioridad)}</span>
+                        {p.detalle?.urgente && <small className={styles.urgent}>Urgente</small>}
+                      </span>
+                    </li>
+                  );
+                })}
               </ol>
             ) : <p className={styles.hint}>Sin puntajes disponibles.</p>}
           </section>
         </div>
         <div className={styles.column}>
           <QueCambio observacion={obs[0] ?? null} ranking={filas} estado={reportes.estado} />
-          {cuadrilla && <Misiones cuadrilla={cuadrilla} ruta={ruta} estado={estadoRuta} />}
+          {cuadrilla && <Misiones cuadrilla={cuadrilla} ruta={ruta} estado={estadoRuta} ranking={filas} />}
           <Transporte {...tp} activo={paradero} onSelect={setParadero} className={styles.transporte} />
         </div>
       </div>

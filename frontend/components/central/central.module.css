@@ -238,6 +238,51 @@
   color: var(--danger);
 }
 
+.ranking:focus-visible {
+  outline: 2px solid var(--secundario);
+  outline-offset: 2px;
+  border-radius: var(--r-10);
+}
+
+/* Rejilla que ya está en la ruta de la cuadrilla elegida */
+.ranking li.enRuta > :nth-child(2) {
+  font-weight: 650;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.3rem;
+}
+
+.ranking .tags small {
+  display: inline;
+}
+
+.ranking li > .prio {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+}
+
+.prio small {
+  flex-basis: 100%;
+  text-align: right;
+}
+
+.resumen {
+  color: var(--text-2);
+}
+
+.resumen b {
+  color: var(--secundario);
+  font-variant-numeric: tabular-nums;
+}
+
 .closure {
   display: grid;
   gap: 0.25rem;
@@ -264,4 +309,11 @@
   .crew {
     width: 100%;
   }
+}
+
+/* .echip--enruta usa el color principal como texto (2,7:1 sobre la tarjeta). En la lista se lee en
+   texto normal y el color principal queda en el borde. */
+.tags :global(.echip--enruta) {
+  color: var(--secundario);
+  box-shadow: inset 0 0 0 1.5px var(--principal);
 }

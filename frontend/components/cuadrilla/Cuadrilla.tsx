@@ -4,7 +4,9 @@
 // la cambia, "Llegué" / "Terminé" y cierre con foto. Consulta la ruta cada 2,5 s (sin Realtime).
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Kicker, Logo } from "@/components/ui";
-import { ApiError } from "@/lib/api";
+import { ApiError, getFicha, type ApiFicha } from "@/lib/api";
+import { ESCENARIO_CENTRAL } from "@/lib/central";
+import { equipoSugerido, evidenciaVigente, motivosCalculados, textoEvidencia } from "@/lib/decision";
 import {
   cambiarEstado,
   cerrarMision,
@@ -24,9 +26,13 @@ import "../reportar/reportar.css";
 import "./cuadrilla.css";
 
 const INTERVALO_MS = 2500;
+const INTERVALO_FICHA_MS = 30_000; // la evidencia cambia menos que la ruta
 const CLAVE_CUADRILLA = "drena.cuadrilla";
 
 const ESTADO_TXT: Record<string, string> = { pendiente: "Pendiente", en_camino: "En camino", en_sitio: "En el lugar" };
+
+const EQUIPO_TXT: Record<string, string> = { basica: "herramientas manuales", hidrojet: "hidrojet" };
+const PUNTAJE = new Intl.NumberFormat("es-CL", { maximumFractionDigits: 3 });
 
 type Aviso = { texto: string; motivo: string; hora: string | null };
 type Cierre = { resp: RespCierre; nombre: string };
@@ -83,13 +89,86 @@ function Elegir({ onElegir }: { onElegir: (id: string) => void }) {
           <button key={c.id} className="cq-crew" onClick={() => onElegir(c.id)}>
             <b>{c.nombre}</b>
             <span>
-              {c.carga} {c.carga === 1 ? "misión" : "misiones"} · {c.equipamiento.join(", ")}
+              {c.carga} {c.carga === 1 ? "misión" : "misiones"} · {c.equipamiento.map((e) => EQUIPO_TXT[e] ?? e).join(", ")}
               {c.is_simulated && " · simulada"}
             </span>
           </button>
         ))
       )}
     </section>
+  );
+}
+
+/** Fichas de las rejillas de la ruta: la esquina completa y la evidencia de la siguiente parada. */
+function useFichas(ids: string[], siguiente: string | null) {
+  const [fichas, setFichas] = useState<Record<string, ApiFicha | "error">>({});
+  const clave = ids.join("|");
+  useEffect(() => {
+    let vigente = true;
+    for (const id of clave ? clave.split("|") : []) {
+      if (fichas[id] && fichas[id] !== "error") continue;
+      getFicha(id, ESCENARIO_CENTRAL, { reintentos: 0, cache: "no-store" })
+        .then((f) => vigente && setFichas((prev) => ({ ...prev, [id]: f })))
+        .catch(() => vigente && setFichas((prev) => (prev[id] ? prev : { ...prev, [id]: "error" })));
+    }
+    return () => {
+      vigente = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clave]);
+  // La siguiente parada se refresca: una foto nueva puede cambiar lo que hay que llevar
+  useEffect(() => {
+    if (!siguiente) return;
+    const t = setInterval(() => {
+      if (document.hidden) return;
+      getFicha(siguiente, ESCENARIO_CENTRAL, { reintentos: 0, cache: "no-store" })
+        .then((f) => setFichas((prev) => ({ ...prev, [siguiente]: f })))
+        .catch(() => {});
+    }, INTERVALO_FICHA_MS);
+    return () => clearInterval(t);
+  }, [siguiente]);
+  return fichas;
+}
+
+function fechaCorta(fecha: string) {
+  const d = new Date(`${fecha}T12:00:00Z`);
+  return Number.isNaN(d.getTime()) ? fecha : d.toLocaleDateString("es-CL", { day: "numeric", month: "short", year: "numeric", timeZone: "America/Santiago" });
+}
+
+/** Por qué esta parada: lo observado y lo calculado van por separado, con su hora y su origen. */
+function PorQue({ ficha }: { ficha: ApiFicha | "error" | undefined }) {
+  if (!ficha) return <p className="rp-small" role="status">Cargando el detalle de la rejilla…</p>;
+  if (ficha === "error") return <p className="rp-small" role="status">Sin detalle de la rejilla por ahora. La parada sigue vigente.</p>;
+  const ev = evidenciaVigente(ficha.observaciones);
+  const equipo = equipoSugerido(ev);
+  const score = ficha.scores.durante ?? ficha.scores.antes;
+  const motivos = motivosCalculados(score?.detalle?.aportes);
+  return (
+    <dl className="cq-porque">
+      <div className={ev ? `cq-dato ${ev.nivelAgua ? "cq-dato--agua" : "cq-dato--obs"}` : "cq-dato"}>
+        <dt>Observado{ev ? ` · ${horaSantiago(ev.ts)}` : ""}</dt>
+        <dd>{ev ? `${textoEvidencia(ev)}${ev.simulada ? " · simulado" : ""}` : "Sin fotos ni reportes vigentes"}</dd>
+      </div>
+      <div className="cq-dato">
+        <dt>Prioridad calculada</dt>
+        <dd>
+          {score?.prioridad != null ? `Puntaje ${PUNTAJE.format(score.prioridad)}` : "Sin puntaje"}
+          {motivos.length > 0 && ` · pesan ${motivos.join(" y ")}`}
+        </dd>
+      </div>
+      {equipo && (
+        <div className={`cq-dato cq-dato--equipo cq-dato--${equipo}`}>
+          <dt>Qué llevar</dt>
+          <dd>{equipo === "hidrojet" ? "Hidrojet: la última foto muestra sedimento" : "Herramientas manuales: hojas o basura en la última foto"}</dd>
+        </div>
+      )}
+      {ficha.ultima_limpieza && (
+        <div className="cq-dato cq-dato--nota">
+          <dt>Última limpieza registrada</dt>
+          <dd>{fechaCorta(ficha.ultima_limpieza.fecha)}{ficha.ultima_limpieza.is_simulated ? " · dato simulado" : ""}</dd>
+        </div>
+      )}
+    </dl>
   );
 }
 
@@ -230,11 +309,21 @@ export default function Cuadrilla() {
     }
   }
 
-  if (!listo) return null;
-
   const misiones = ruta?.misiones ?? [];
   const sig = misiones[0];
   const resto = misiones.slice(1);
+  const fichas = useFichas(
+    misiones.flatMap((m) => (m.sumidero_id ? [m.sumidero_id] : [])),
+    sig?.sumidero_id ?? null,
+  );
+
+  if (!listo) return null;
+
+  const fichaDe = (m: Mision) => (m.sumidero_id ? fichas[m.sumidero_id] : undefined);
+  const nombreDe = (m: Mision) => {
+    const f = fichaDe(m);
+    return (f && f !== "error" && f.intersection_nombre) || m.nombre;
+  };
   const conCoord = misiones.filter((m): m is Mision & { lat: number; lon: number } => m.lat != null && m.lon != null);
 
   return (
@@ -291,8 +380,9 @@ export default function Cuadrilla() {
             <>
               <section className="cq-next">
                 <Kicker tone="accent">Siguiente parada · {ESTADO_TXT[sig.estado] ?? sig.estado}</Kicker>
-                <h1 className="cq-next__name">{sig.nombre}</h1>
+                <h1 className="cq-next__name">{nombreDe(sig)}</h1>
                 {sig.sumidero_id && <p className="rp-small">Rejilla {sig.sumidero_id}</p>}
+                {sig.sumidero_id && <PorQue ficha={fichaDe(sig)} />}
                 <div className="rp-two">
                   {sig.estado === "pendiente" && (
                     <Button size="lg" className="rp-big" disabled={!!ocupado} onClick={() => avanzar(sig, "en_camino")}>
@@ -335,7 +425,7 @@ export default function Cuadrilla() {
                     {resto.map((m, i) => (
                       <li key={m.mission_id}>
                         <span className="cq-list__n">{i + 2}</span>
-                        <span>{m.nombre}</span>
+                        <span>{nombreDe(m)}</span>
                       </li>
                     ))}
                   </ol>

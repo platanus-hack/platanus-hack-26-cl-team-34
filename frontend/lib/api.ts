@@ -154,6 +154,7 @@ export interface ApiFicha {
     tiene_foto: boolean;
     tiene_texto: boolean;
     ts: string;
+    is_simulated?: boolean;
     clasificacion: unknown;
   }[];
   senales: ApiSenal[];

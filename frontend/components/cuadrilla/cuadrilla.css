@@ -22,3 +22,18 @@
 .cq-res { padding-top: 32px; }
 .cq-res--verificado .rp-h1 { color: var(--ok); }
 .cq-res--rechazado .rp-h1 { color: var(--danger); }
+
+/* Texto secundario de la cuadrilla: --text-2 queda bajo 4,5:1 sobre --surface-2 */
+.cq { --cq-texto-2: color-mix(in srgb, var(--secundario) 82%, var(--fondo)); }
+.cq-next .rp-small { color: var(--cq-texto-2); }
+
+/* Por qué esta parada: observado y calculado por separado, legible con un vistazo */
+.cq-porque { display: grid; gap: 6px; margin: 2px 0 4px; }
+.cq-dato { display: grid; gap: 2px; padding: 8px 12px; border-radius: var(--r-10); background: var(--surface-2); border-left: 3px solid var(--line); }
+.cq-dato dt { font-size: 13px; font-weight: 600; color: var(--cq-texto-2); }
+.cq-dato dd { margin: 0; font-size: 15px; line-height: 1.35; overflow-wrap: anywhere; }
+.cq-dato--obs { border-left-color: var(--prio-alta); }
+.cq-dato--agua { border-left-color: var(--agua); }
+.cq-dato--equipo { border-left-color: var(--secundario); }
+.cq-dato--equipo dd { font-weight: 700; }
+.cq-dato--nota { background: none; border-left-color: transparent; padding-top: 2px; padding-bottom: 2px; }

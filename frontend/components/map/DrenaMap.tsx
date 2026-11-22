@@ -5,6 +5,7 @@ import type { LngLat, Prioridad } from "@/lib/data";
 import { FLUJO_CONFIG } from "@/lib/flujo/config";
 import { BASE_STYLE, loadMapLibre, type MapLibre } from "./maplibre";
 import { colorDe, EVENTO_PALETA } from "@/lib/paleta";
+import { ordenPins } from "@/lib/decision";
 
 export interface MapPin {
   id: string;
@@ -436,8 +437,9 @@ export default function DrenaMap(props: DrenaMapProps) {
     });
     // Paraderos bajo los pines de prioridad; el activo al final para que quede encima
     [...(props.paraderos ?? [])].sort((a, b) => Number(!!a.activo) - Number(!!b.activo)).forEach((p) => add(paraderoEl(p), p.coord));
-    // pins: los atenuados primero para que queden debajo
-    [...(props.pins ?? [])].sort((a, b) => Number(!!b.faded) - Number(!!a.faded)).forEach((p) => add(pinEl(p, size), p.coord));
+    // Pins: el último agregado queda encima. Primero los atenuados y después de menor a mayor
+    // prioridad, así un punto alto nunca queda tapado por uno bajo cuando se solapan.
+    [...(props.pins ?? [])].sort(ordenPins).forEach((p) => add(pinEl(p, size), p.coord));
     (props.labels ?? []).forEach((l) => add(labelEl(l), l.coord, l.anchor ?? "left", l.offset ?? [size / 2 + 6, 0]));
   }, [ready, props.pins, props.labels, props.celda, props.paraderos, size]);
 
