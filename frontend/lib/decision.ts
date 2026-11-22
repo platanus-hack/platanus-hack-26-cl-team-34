@@ -37,8 +37,10 @@ export function motivosCalculados(aportes: Record<string, number> | null | undef
     .map(([k]) => (NOMBRE_VARIABLE[k] ?? k).toLowerCase());
 }
 
-/** Igual a observado.vigencia_horas de backend/config/formula.yaml (y a VIGENCIA_FOTO_H de cadenas.ts). */
+/** Vigencias de backend/config/formula.yaml: observado.vigencia_horas (también VIGENCIA_FOTO_H de
+ * cadenas.ts) y durante.vigencia_agua_horas. El agua dura menos que una obstrucción. */
 export const VIGENCIA_OBSERVACION_H = 72;
+export const VIGENCIA_AGUA_H = 6;
 
 export interface Evidencia {
   tipo: string;
@@ -54,23 +56,24 @@ type ObsFicha = ApiFicha["observaciones"][number];
 
 /**
  * La observación evaluable más reciente que sigue vigente. Una imagen no evaluable no reemplaza a
- * la anterior: la anterior sigue mandando hasta que expira.
+ * la anterior: la anterior sigue mandando hasta que expira. `tipo` filtra por tipo de observación.
  */
-export function evidenciaVigente(obs: readonly ObsFicha[], ahora = Date.now(), vigenciaH = VIGENCIA_OBSERVACION_H): Evidencia | null {
-  const limite = ahora - vigenciaH * 3_600_000;
-  const ordenadas = [...obs].sort((a, b) => Date.parse(b.ts) - Date.parse(a.ts));
+export function evidenciaVigente(obs: readonly ObsFicha[], ahora = Date.now(), tipo?: string): Evidencia | null {
+  const ordenadas = obs.filter((o) => !tipo || o.tipo === tipo).sort((a, b) => Date.parse(b.ts) - Date.parse(a.ts));
   for (const o of ordenadas) {
     const t = Date.parse(o.ts);
-    if (!Number.isFinite(t) || t < limite) break;
     const c = (o.clasificacion ?? null) as Record<string, unknown> | null;
-    if (!c || c.evaluable === false) continue;
+    if (!Number.isFinite(t) || !c || c.evaluable === false) continue;
+    const nivelAgua = typeof c.nivel_agua === "string" ? c.nivel_agua : null;
+    const vigenciaH = nivelAgua && typeof c.rejilla !== "string" ? VIGENCIA_AGUA_H : VIGENCIA_OBSERVACION_H;
+    if (ahora - t >= vigenciaH * 3_600_000) continue;
     return {
       tipo: o.tipo,
       fuente: o.fuente,
       ts: o.ts,
       rejilla: typeof c.rejilla === "string" ? c.rejilla : null,
       material: Array.isArray(c.material) ? c.material.map(String) : [],
-      nivelAgua: typeof c.nivel_agua === "string" ? c.nivel_agua : null,
+      nivelAgua,
       simulada: !!o.is_simulated,
     };
   }

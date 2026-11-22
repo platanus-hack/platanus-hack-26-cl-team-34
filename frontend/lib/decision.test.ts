@@ -64,6 +64,23 @@ test("una observación vencida no cuenta como evidencia", () => {
   assert.equal(evidenciaVigente([], AHORA), null);
 });
 
+test("el agua observada vence a las 6 horas; una obstrucción, a las 72", () => {
+  const agua = (h: number) => obs(h, { evaluable: true, nivel_agua: "hasta_vereda" }, { tipo: "foto_agua" });
+  assert.equal(evidenciaVigente([agua(5)], AHORA)?.nivelAgua, "hasta_vereda");
+  assert.equal(evidenciaVigente([agua(7)], AHORA), null);
+  // El agua vencida no tapa una foto de rejilla anterior que sigue vigente
+  assert.equal(evidenciaVigente([agua(7), obs(30, { evaluable: true, rejilla: "tapada" })], AHORA)?.rejilla, "tapada");
+});
+
+test("el filtro por tipo encuentra la última foto de rejilla aunque haya agua más reciente", () => {
+  const lista = [
+    obs(1, { evaluable: true, nivel_agua: "cuneta" }, { tipo: "foto_agua" }),
+    obs(3, { evaluable: true, rejilla: "tapada", material: ["sedimento"] }),
+  ];
+  assert.equal(evidenciaVigente(lista, AHORA)?.tipo, "foto_agua");
+  assert.equal(equipoSugerido(evidenciaVigente(lista, AHORA, "foto_rejilla")), "hidrojet");
+});
+
 test("la evidencia conserva si es simulada y se describe en texto", () => {
   const e = evidenciaVigente([obs(2, { evaluable: true, rejilla: "parcial", material: ["sedimento"] }, { is_simulated: true })], AHORA);
   assert.equal(e?.simulada, true);

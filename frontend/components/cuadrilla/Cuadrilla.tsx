@@ -140,7 +140,9 @@ function PorQue({ ficha }: { ficha: ApiFicha | "error" | undefined }) {
   if (!ficha) return <p className="rp-small" role="status">Cargando el detalle de la rejilla…</p>;
   if (ficha === "error") return <p className="rp-small" role="status">Sin detalle de la rejilla por ahora. La parada sigue vigente.</p>;
   const ev = evidenciaVigente(ficha.observaciones);
-  const equipo = equipoSugerido(ev);
+  // El equipo sale de la última foto de rejilla, aunque después haya llegado una de agua
+  const rejilla = evidenciaVigente(ficha.observaciones, Date.now(), "foto_rejilla");
+  const equipo = equipoSugerido(rejilla);
   const score = ficha.scores.durante ?? ficha.scores.antes;
   const motivos = motivosCalculados(score?.detalle?.aportes);
   return (
@@ -149,6 +151,12 @@ function PorQue({ ficha }: { ficha: ApiFicha | "error" | undefined }) {
         <dt>Observado{ev ? ` · ${horaSantiago(ev.ts)}` : ""}</dt>
         <dd>{ev ? `${textoEvidencia(ev)}${ev.simulada ? " · simulado" : ""}` : "Sin fotos ni reportes vigentes"}</dd>
       </div>
+      {rejilla && ev && rejilla.ts !== ev.ts && (
+        <div className="cq-dato cq-dato--obs">
+          <dt>Observado · {horaSantiago(rejilla.ts)}</dt>
+          <dd>{textoEvidencia(rejilla)}{rejilla.simulada ? " · simulado" : ""}</dd>
+        </div>
+      )}
       <div className="cq-dato">
         <dt>Prioridad calculada</dt>
         <dd>
